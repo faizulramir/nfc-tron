@@ -1,0 +1,9 @@
+{
+  "name": "nfc-electron-addon",
+  "version": "1.1.0",
+  "main": "index.js",
+  "gypfile": true,
+  "dependencies": {
+    "node-addon-api": "^8.3.1"
+  }
+}

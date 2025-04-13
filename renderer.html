@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NFC Reader/Writer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .reader-list {
+            margin: 10px 0;
+        }
+
+        .reader-item {
+            padding: 5px;
+            margin: 2px 0;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>NFC Reader/Writer</h1>
+
+        <div class="card">
+            <h2>Reader Status</h2>
+            <div id="readerStatus" class="status info">Initializing...</div>
+            <div class="reader-list" id="readerList"></div>
+            <button id="refreshReaders">Refresh Readers</button>
+        </div>
+
+        <div class="card">
+            <h2>Read Tag</h2>
+            <div id="readStatus" class="status"></div>
+            <button id="readTag">Read Tag</button>
+            <div id="readResult">
+                <p>UID: <span id="tagUid"></span></p>
+                <p>NDEF Text: <span id="tagText"></span></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Write Tag</h2>
+            <div id="writeStatus" class="status"></div>
+            <textarea id="writeData" placeholder="Enter text to write to NFC tag"></textarea>
+            <button id="writeTag">Write Tag</button>
+        </div>
+
+        <div class="card">
+            <h2>Continuous Reading</h2>
+            <div id="continuousStatus" class="status"></div>
+            <button id="startContinuous">Start Continuous Reading</button>
+            <button id="stopContinuous" disabled>Stop Continuous Reading</button>
+            <div id="continuousResult">
+                <p>Last Tag UID: <span id="continuousUid"></span></p>
+                <p>Last NDEF Text: <span id="continuousText"></span></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Custom APDU Command</h2>
+            <div id="apduStatus" class="status"></div>
+            <input type="text" id="apduCommand" placeholder="Enter APDU command (hex)"
+                style="width: 100%; padding: 10px; margin: 10px 0;">
+            <button id="sendApdu">Send APDU</button>
+            <div id="apduResult">
+                <p>Response: <span id="apduResponse"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        const nfc = require('./index.js');
+
+        // UI Elements
+        const readerStatus = document.getElementById('readerStatus');
+        const readerList = document.getElementById('readerList');
+        const refreshReaders = document.getElementById('refreshReaders');
+        const readTag = document.getElementById('readTag');
+        const readStatus = document.getElementById('readStatus');
+        const tagUid = document.getElementById('tagUid');
+        const tagText = document.getElementById('tagText');
+        const writeTag = document.getElementById('writeTag');
+        const writeStatus = document.getElementById('writeStatus');
+        const writeData = document.getElementById('writeData');
+        const startContinuous = document.getElementById('startContinuous');
+        const stopContinuous = document.getElementById('stopContinuous');
+        const continuousStatus = document.getElementById('continuousStatus');
+        const continuousUid = document.getElementById('continuousUid');
+        const continuousText = document.getElementById('continuousText');
+        const sendApdu = document.getElementById('sendApdu');
+        const apduStatus = document.getElementById('apduStatus');
+        const apduCommand = document.getElementById('apduCommand');
+        const apduResponse = document.getElementById('apduResponse');
+
+        let currentReader = null;
+        let isContinuousReading = false;
+
+        // Update reader list
+        async function updateReaders() {
+            try {
+                readerStatus.textContent = 'Refreshing readers...';
+                readerStatus.className = 'status info';
+                const readers = await nfc.getReaders();
+                readerList.innerHTML = '';
+
+                if (readers && readers.length > 0) {
+                    currentReader = readers[0];
+                    readers.forEach(reader => {
+                        const div = document.createElement('div');
+                        div.className = 'reader-item';
+                        div.textContent = reader;
+                        if (reader === currentReader) {
+                            div.style.background = '#c3e6cb';
+                        }
+                        readerList.appendChild(div);
+                    });
+                    readerStatus.textContent = `Found ${readers.length} reader(s)`;
+                    readerStatus.className = 'status success';
+                } else {
+                    readerStatus.textContent = 'No readers found';
+                    readerStatus.className = 'status error';
+                }
+            } catch (err) {
+                readerStatus.textContent = `Error: ${err.message}`;
+                readerStatus.className = 'status error';
+            }
+        }
+
+        // Read tag
+        readTag.addEventListener('click', async () => {
+            if (!currentReader) {
+                readStatus.textContent = 'No reader selected';
+                readStatus.className = 'status error';
+                return;
+            }
+
+            try {
+                readStatus.textContent = 'Reading tag...';
+                readStatus.className = 'status info';
+                const data = await nfc.readTag(currentReader);
+                tagUid.textContent = data.uid;
+                tagText.textContent = data.ndef;
+                readStatus.textContent = 'Read successful';
+                readStatus.className = 'status success';
+            } catch (err) {
+                readStatus.textContent = `Error: ${err.message}`;
+                readStatus.className = 'status error';
+            }
+        });
+
+        // Write tag
+        writeTag.addEventListener('click', async () => {
+            if (!currentReader) {
+                writeStatus.textContent = 'No reader selected';
+                writeStatus.className = 'status error';
+                return;
+            }
+
+            const data = writeData.value.trim();
+            if (!data) {
+                writeStatus.textContent = 'Please enter text to write';
+                writeStatus.className = 'status error';
+                return;
+            }
+
+            try {
+                writeStatus.textContent = 'Writing to tag...';
+                writeStatus.className = 'status info';
+                const success = await nfc.writeTag(currentReader, data);
+                writeStatus.textContent = success ? 'Write successful' : 'Write failed';
+                writeStatus.className = success ? 'status success' : 'status error';
+            } catch (err) {
+                writeStatus.textContent = `Error: ${err.message}`;
+                writeStatus.className = 'status error';
+            }
+        });
+
+        // Continuous reading
+        startContinuous.addEventListener('click', () => {
+            if (!currentReader) {
+                continuousStatus.textContent = 'No reader selected';
+                continuousStatus.className = 'status error';
+                return;
+            }
+
+            isContinuousReading = true;
+            startContinuous.disabled = true;
+            stopContinuous.disabled = false;
+            continuousStatus.textContent = 'Continuous reading started';
+            continuousStatus.className = 'status info';
+
+            nfc.startContinuousRead((data) => {
+                continuousUid.textContent = data.uid;
+                continuousText.textContent = data.ndef;
+            });
+        });
+
+        stopContinuous.addEventListener('click', () => {
+            nfc.stopContinuousRead();
+            isContinuousReading = false;
+            startContinuous.disabled = false;
+            stopContinuous.disabled = true;
+            continuousStatus.textContent = 'Continuous reading stopped';
+            continuousStatus.className = 'status info';
+        });
+
+        // Send APDU
+        sendApdu.addEventListener('click', async () => {
+            if (!currentReader) {
+                apduStatus.textContent = 'No reader selected';
+                apduStatus.className = 'status error';
+                return;
+            }
+
+            const command = apduCommand.value.trim();
+            if (!command) {
+                apduStatus.textContent = 'Please enter an APDU command';
+                apduStatus.className = 'status error';
+                return;
+            }
+
+            try {
+                apduStatus.textContent = 'Sending APDU command...';
+                apduStatus.className = 'status info';
+                const response = await nfc.sendApdu(currentReader, command);
+                apduResponse.textContent = response;
+                apduStatus.textContent = 'Command sent successfully';
+                apduStatus.className = 'status success';
+            } catch (err) {
+                apduStatus.textContent = `Error: ${err.message}`;
+                apduStatus.className = 'status error';
+            }
+        });
+
+        // Refresh readers
+        refreshReaders.addEventListener('click', updateReaders);
+
+        // Initialize
+        updateReaders();
+    </script>
+</body>
+
+</html>
