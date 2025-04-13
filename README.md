@@ -1,4 +1,4 @@
-# NFC Electron Addon
+# NFC-Tron
 
 A native addon for Electron applications to interact with NFC readers, specifically optimized for ACR122U readers.
 
@@ -56,7 +56,7 @@ This project is currently under active development. Features are being added and
 
 1. Import the addon in your main process:
    ```javascript
-   const nfc = require('./nfc-electron-addon');
+   const nfc = require('./nfc-tron');
    ```
 
 2. Expose the NFC functionality to the renderer process:
@@ -147,4 +147,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT License - See LICENSE file for details 
+MIT License - See LICENSE file for details
