@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6B4E195E-5368-D85F-6653-E458A6A8455F}</ProjectGuid>
+    <ProjectGuid>{4590FA30-55F4-17D6-4C77-7B67A3BED881}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>nfcaddon</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;C:\Users\faizu\Downloads\nfc-electron-demo-complete\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;D:\project\desktop\myori-new-nfc-reader\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -84,13 +84,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;C:\Users\faizu\Downloads\nfc-electron-demo-complete\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;D:\project\desktop\myori-new-nfc-reader\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=nfcaddon;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;C:\Users\faizu\Downloads\nfc-electron-demo-complete\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;D:\project\desktop\myori-new-nfc-reader\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat></DebugInformationFormat>
@@ -129,7 +129,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;C:\Users\faizu\Downloads\nfc-electron-demo-complete\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\include\node;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\src;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\config;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\openssl\openssl\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\uv\include;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\zlib;C:\Users\faizu\AppData\Local\node-gyp\Cache\22.14.0\deps\v8\include;D:\project\desktop\myori-new-nfc-reader\nfc-electron-addon\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=nfcaddon;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="node_modules\node-addon-api\nothing.vcxproj">
-      <Project>{41D08E40-F2DA-A6A2-6B35-BD5B1CE695C1}</Project>
+      <Project>{DFBAB725-F9B1-49B2-C547-5522E951EB01}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
