@@ -100,12 +100,12 @@ Napi::Value GetReaders(const Napi::CallbackInfo &info)
         if (IsACR122U(readerName))
         {
             // Prioritize ACR122U readers by putting them first
-            readers.Set(0, Napi::String::New(env, readerName));
+            readers.Set(static_cast<uint32_t>(0), Napi::String::New(env, readerName));
             i = 1;
         }
         else
         {
-            readers.Set(i++, Napi::String::New(env, readerName));
+            readers.Set(static_cast<uint32_t>(i++), Napi::String::New(env, readerName));
         }
         pReader += strlen(pReader) + 1;
     }
