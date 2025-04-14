@@ -1,14 +1,22 @@
 {
   "name": "nfc-tron",
   "version": "1.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "node test.js",
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prepare": "npm run build"
   },
   "author": "faizulramir",
   "gypfile": true,
   "dependencies": {
     "node-addon-api": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "typescript": "^5.3.3"
   }
 }

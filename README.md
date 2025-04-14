@@ -40,6 +40,25 @@ This project is currently under active development. Features are being added and
    node-gyp rebuild
    ```
 
+## TypeScript Support
+
+The project now includes full TypeScript support:
+
+1. TypeScript configuration is available in `tsconfig.json`
+2. Source files are in the `src` directory
+3. Compiled JavaScript files are in the `dist` directory
+4. Type definitions are automatically generated
+
+To build TypeScript files:
+```bash
+npm run build
+```
+
+To watch for changes during development:
+```bash
+npm run watch
+```
+
 ## Windows Smart Card Service Setup
 
 1. Open PowerShell as Administrator
@@ -55,38 +74,40 @@ This project is currently under active development. Features are being added and
 ## Usage in Electron Application
 
 1. Import the addon in your main process:
-   ```javascript
-   const nfc = require('./nfc-tron');
+   ```typescript
+   import { getReaders, readTag, writeTag, sendApdu, startContinuousRead, stopContinuousRead, ACR122U_COMMANDS } from './nfc-tron';
    ```
 
 2. Expose the NFC functionality to the renderer process:
-   ```javascript
+   ```typescript
    ipcMain.handle('get-readers', async () => {
-     return await nfc.getReaders();
+     return await getReaders();
    });
 
-   ipcMain.handle('start-reading', async (event, readerName) => {
-     return await nfc.startReading(readerName);
+   ipcMain.handle('start-reading', async (event, readerName: string) => {
+     return await startContinuousRead((data) => {
+       // Handle NFC data
+       console.log('NFC Data:', data);
+     });
    });
 
    ipcMain.handle('stop-reading', async () => {
-     return await nfc.stopReading();
+     return await stopContinuousRead();
    });
    ```
 
 3. Use in your renderer process:
-   ```javascript
+   ```typescript
    // Get available readers
-   const readers = await window.nfc.getReaders();
+   const readers: string[] = await window.nfc.getReaders();
 
    // Start continuous reading
-   await window.nfc.startReading(selectedReader);
-   window.nfc.onNfcData((data) => {
+   await window.nfc.startContinuousRead((data) => {
      console.log('NFC Data:', data);
    });
 
    // Stop reading
-   await window.nfc.stopReading();
+   await window.nfc.stopContinuousRead();
    ```
 
 ## ACR122U Specific Features
@@ -101,19 +122,19 @@ The addon includes special handling for ACR122U readers:
 
 ## Available Commands
 
-- `getReaders()`: List available NFC readers
-- `getReaderInfo(readerName)`: Get reader information (including firmware version for ACR122U)
-- `readTag(readerName)`: Read data from an NFC tag
-- `writeTag(readerName, data)`: Write data to an NFC tag
-- `sendApdu(readerName, command)`: Send custom APDU command
-- `startReading(readerName)`: Start continuous reading
-- `stopReading()`: Stop continuous reading
+- `getReaders(): Promise<string[]>`: List available NFC readers
+- `getReaderInfo(readerName: string): Promise<ReaderInfo>`: Get reader information
+- `readTag(readerName: string): Promise<TagResult>`: Read data from an NFC tag
+- `writeTag(readerName: string, data: string): Promise<any>`: Write data to an NFC tag
+- `sendApdu(readerName: string, command: string): Promise<any>`: Send custom APDU command
+- `startContinuousRead(callback: (result: TagResult) => void): void`: Start continuous reading
+- `stopContinuousRead(): void`: Stop continuous reading
 
 ## ACR122U APDU Commands
 
 The addon provides predefined APDU commands for ACR122U readers:
 
-```javascript
+```typescript
 const ACR122U_COMMANDS = {
   GET_FIRMWARE: 'FF00480000',
   GET_UID: 'FFCA000000',
@@ -121,7 +142,7 @@ const ACR122U_COMMANDS = {
   AUTHENTICATE: 'FF860000050100006000',
   READ_BINARY: 'FFB0000010',
   UPDATE_BINARY: 'FFD6000010'
-};
+} as const;
 ```
 
 ## Troubleshooting
@@ -140,6 +161,11 @@ const ACR122U_COMMANDS = {
    - Restart the Smart Card service
    - Reconnect the NFC reader
    - Check device manager for any driver issues
+
+4. If TypeScript compilation fails:
+   - Ensure all dependencies are installed
+   - Check tsconfig.json for correct configuration
+   - Verify source files are in the src directory
 
 ## Contributing
 
